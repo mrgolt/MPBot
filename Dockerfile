@@ -18,4 +18,4 @@ RUN apt-get install -y libfontconfig
 
 COPY . .
 
-CMD ["python", "-u", "./bot.
+CMD ["python", "-u", "./bot.py"]
