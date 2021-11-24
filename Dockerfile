@@ -10,16 +10,9 @@ RUN apt-get -y install locales
 RUN locale-gen ru_RU.UTF-8
 RUN apt-get install -y libfontconfig
 
-
-RUN apt-get install -yqq unzip curl wget fonts-liberation libasound2 libdrm2 libgbm1 libnspr4 libnss3 xdg-utils
-
-#RUN apt-get install libnss3-1d libxss1 libgconf2-4 libappindicator1 libindicator7
-
-RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN apt -f install -y
-#RUN gdebi google-chrome-stable_current_amd64.deb -y
-RUN dpkg -i google-chrome-stable_current_amd64.deb
+RUN apt-get install chromium-chromedriver
 
 COPY . .
 
-CMD ["python", "-u", "./
+CMD ["python", "-u", "./bot.py"]
+
