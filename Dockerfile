@@ -4,7 +4,8 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
-RUN apt-get install python3-pip
+RUN add-apt-repository universe
+RUN apt install python3-pip
 RUN pip install -r requirements.txt
 
 RUN apt-get -y update
@@ -25,4 +26,4 @@ RUN apt -f install -y
 
 COPY . .
 
-CMD ["python", "-u", "./bot.
+CMD 
