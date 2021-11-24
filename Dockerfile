@@ -18,7 +18,7 @@ RUN apt-get install -yqq unzip curl wget gdebi
 
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN apt -f install -y
-RUN gdebi google-chrome-stable_current_amd64.deb
+RUN gdebi google-chrome-stable_current_amd64.deb -y
 #RUN dpkg -i google-chrome-stable_current_amd64.deb
 
 
