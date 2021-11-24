@@ -5,6 +5,7 @@ from get_position import *
 bot = telebot.TeleBot("2102905381:AAHbjtUofTgIvm0muTYZbbcTkeVSQlI5es4")
 
 
+
 @bot.message_handler(commands=["start"])  # Хендлер на команду start
 def start_message(message):
     #tg_analytic.statistics(message.chat.id, message.text)
