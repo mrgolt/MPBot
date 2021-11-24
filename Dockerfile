@@ -4,7 +4,12 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
-RUN sudo apt update
+RUN apt update
+RUN apt install software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt update
+RUN apt install python3.8
+
 RUN add-apt-repository universe
 RUN apt install python3-pip
 RUN pip install -r requirements.txt
@@ -27,4 +32,4 @@ RUN apt -f install -y
 
 COPY . .
 
-CMD ["python
+CMD ["python", "-u", "./bot.py"]
