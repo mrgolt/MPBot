@@ -13,8 +13,12 @@ RUN apt-get install -y libfontconfig
 RUN apt-get install -y google-chrome-stable
 
 RUN apt-get install -yqq unzip curl
-RUN wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip
-RUN unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
+RUN sudo apt-get install wget
+RUN wget https://dl.google.com/linux/linux_signing_key.pub
+RUN sudo apt-get install gnupg
+RUN sudo apt-key add linux_signing_key.pub
+RUN sudo apt update
+RUN sudo apt install google-chrome-stable
 
 COPY . .
 
