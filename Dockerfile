@@ -11,7 +11,7 @@ RUN locale-gen ru_RU.UTF-8
 RUN apt-get install -y libfontconfig
 
 
-RUN apt-get install -yqq unzip curl wget
+RUN apt-get install -yqq unzip curl wget gdebi
 
 #RUN apt-get install libnss3-1d libxss1 libgconf2-4 libappindicator1 libindicator7
 
@@ -23,4 +23,4 @@ RUN gdebi google-chrome-stable_current_amd64.deb
 
 COPY . .
 
-CMD ["python", "-u", "./bot.py"
+CMD ["python", "-u", "./bo
