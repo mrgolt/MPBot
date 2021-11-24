@@ -10,7 +10,7 @@ RUN apt-get -y install locales
 RUN locale-gen ru_RU.UTF-8
 RUN apt-get install -y libfontconfig
 
-RUN apt-get install chromium-chromedriver
+RUN apt-get install chromium-driver
 
 COPY . .
 
