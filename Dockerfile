@@ -1,4 +1,4 @@
-FROM python:3.8
+FROM ubuntu
 
 WORKDIR /usr/src/app
 
@@ -12,6 +12,7 @@ RUN apt-get install -y libfontconfig
 
 
 RUN apt-get install -yqq unzip curl wget
+
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y tzdata
