@@ -10,7 +10,6 @@ RUN apt-get -y install locales
 RUN locale-gen ru_RU.UTF-8
 RUN apt-get install -y libfontconfig
 
-RUN apt-get install -y google-chrome-stable
 
 RUN apt-get install -yqq unzip curl
 RUN sudo apt-get install wget
@@ -20,4 +19,4 @@ RUN sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 COPY . .
 
-CMD ["python", "-u", "./bot.py"]
+CMD ["python", "-u", "./bot.py"
