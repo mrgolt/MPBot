@@ -23,4 +23,4 @@ RUN gdebi google-chrome-stable_current_amd64.deb
 
 COPY . .
 
-CMD ["python", "-u", "./bo
+CMD ["python", "-u", "./bot.py"]
