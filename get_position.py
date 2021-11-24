@@ -1,7 +1,9 @@
 from init import *
 
 options = webdriver.ChromeOptions()
-options.add_argument('headless')
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
 browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
 def get_keyword_position(limit: int=1000, query: str="", artikul: str=""):
