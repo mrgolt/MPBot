@@ -20,7 +20,7 @@ def get_keyword_position(limit: int=1000, query: str="", artikul: str=""):
         browser.get(
             'https://www.wildberries.ru/catalog/0/search.aspx?sort=popular&search=' + query + '&sort=popular&page=' + str(
                 page))
-        sleep(2)
+        sleep(3)
         html = browser.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
 
         soup = BeautifulSoup(html, 'html.parser')
