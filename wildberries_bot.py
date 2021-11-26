@@ -3,6 +3,7 @@ from imports import *
 current_platform = platform.system()
 if current_platform == "Linux":
     s = Service(os.path.dirname(os.path.realpath(__file__))+"/linux_geckodriver")
+    os.chmod(os.path.dirname(os.path.realpath(__file__))+"/linux_geckodriver", 0o755)
 elif current_platform == "Darwin":
     s = Service(os.path.dirname(os.path.realpath(__file__))+"/mac_geckodriver")
 elif current_platform == "Windows":
@@ -12,7 +13,7 @@ else:
 
 options = webdriver.FirefoxOptions()
 options.add_argument("--headless")
-request_driver = webdriver.Firefox(service=s, options=options)
+request_driver = webdriver.Firefox(executable_path=os.path.dirname(os.path.realpath(__file__))+"/linux_geckodriver", options=options)
 
 
 def get_request(keyphrase):
@@ -84,4 +85,4 @@ def get_vendor_pos(vendor, keyphrase, pages):
         return None
 
 
-print(get_vendor_pos(43915761, "контейнер для линз", 20))
+pr
