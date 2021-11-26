@@ -14,4 +14,5 @@ RUN apt-get install -y firefox-esr
 
 COPY . .
 
-CMD ["python", "-u", "./wildberries_bot.py"]
+CMD ["python", "-u", "./bot.py"]
+

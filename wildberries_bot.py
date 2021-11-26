@@ -1,5 +1,14 @@
 from imports import *
 
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    # Legacy Python that doesn't verify HTTPS certificates by default
+    pass
+else:
+    # Handle target environment that doesn't support HTTPS verification
+    ssl._create_default_https_context = _create_unverified_https_context
+
 current_platform = platform.system()
 if current_platform == "Linux":
     s = Service(os.path.dirname(os.path.realpath(__file__))+"/linux_geckodriver")
@@ -85,4 +94,4 @@ def get_vendor_pos(vendor, keyphrase, pages):
         return None
 
 
-print(get_vendor_pos(43915761, "контейнер для линз", 20))
+#print(get_vendor_pos(43915761, "контейнер для линз", 40))
