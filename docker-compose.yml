@@ -7,14 +7,13 @@ services:
     ports:
       - 4444:4444
 
-
-  mpbot:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: mpbot
-    restart: always
-    links:
-      - selenium
-    depends_on:
-      - selenium
+#  mpbot:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: mpbot
+#    restart: always
+#    links:
+#      - selenium
+#    depends_on:
+#      - selenium
