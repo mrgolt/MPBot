@@ -19,14 +19,14 @@ elif current_platform == "Windows":
     s = Service("windows_geckodriver.exe")
 else:
     raise Exception("Your OS is not supported")
-#
+
 options = webdriver.FirefoxOptions()
 options.add_argument("--headless")
 request_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
 
 
 def get_request(keyphrase):
-    request_driver.get(f"https://www.wildberries.ru/catalog/0/search.aspx?page=2&sort=popular&search={keyphrase.replace(' ','+')}")
+    request_driver.get(f"https://www.wildberries.ru/catalog/0/search.aspx?page=1&sort=popular&search={keyphrase}")
     products = WebDriverWait(request_driver, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "j-card-item")))
     arr = []
     for product in products:
@@ -39,17 +39,13 @@ def get_request(keyphrase):
     for entry in network:
         if "name" in entry.keys():
             name = entry["name"]
-            if "spp" in name and "filters" not in name:
+            if "spp" in name and "filters" not in name and "search" not in name:
                 request = name
     return request, arr
 
 
 def get_page_vendors(request, page):
-    request = request.split('&')
-    for n, param in enumerate(request):
-        if "page" in param:
-            request[n] = f"page={2+page}"
-    request = '&'.join(request)
+    request += f"&page={page+1}"
     https = urllib3.PoolManager()
     response = https.request("GET", request)
     soup = BeautifulSoup(response.data, "html.parser")
@@ -92,6 +88,3 @@ def get_vendor_pos(vendor, keyphrase, pages):
         return vendor_arr.index(vendor)
     except:
         return None
-
-
-#print(get_vendor_pos(43915761, "контейнер для линз", 40)

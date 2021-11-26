@@ -13,3 +13,11 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 1637916667466	Marionette	WARN	TLS certificate errors will be ignored for this session
 JavaScript error: , line 0: uncaught exception: Object
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+1637923668978	geckodriver	INFO	Listening on 127.0.0.1:54641
+1637923669497	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "--headless" "--remote-debugging-port" "54642" "-foreground" "-no-remote" "-profile" "/var/folders/75/kkyngx494p363mq2rp7kfssh0000gn/T/rust_mozprofilezcagi8"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1637923674642	Marionette	INFO	Listening on port 54647
+1637923674742	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: , line 0: uncaught exception: Object
+console.log: WebExtensions: reset-default-search: No addons in our list are installed.
