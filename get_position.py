@@ -4,8 +4,8 @@ options = webdriver.ChromeOptions()
 options.add_argument('--headless')
 #options.add_argument('--no-sandbox')
 #options.add_argument('--disable-dev-shm-usage')
-browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-#browser = webdriver.Remote("http://selenium:4444/wd/hub", options=options)
+#browser = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+#browser = webdriver.Remote("http://87.249.53.102:4444/wd/hub", options=options)
 
 def get_keyword_position(limit: int=1000, query: str="", artikul: str=""):
     page = 1

@@ -2,18 +2,17 @@ from imports import *
 
 current_platform = platform.system()
 if current_platform == "Linux":
-    s = Service("/usr/src/app/linux_geckodriver")
+    s = Service(os.path.dirname(os.path.realpath(__file__))+"/linux_geckodriver")
 elif current_platform == "Darwin":
-    s = Service("mac_geckodriver")
+    s = Service(os.path.dirname(os.path.realpath(__file__))+"/mac_geckodriver")
 elif current_platform == "Windows":
     s = Service("windows_geckodriver.exe")
 else:
     raise Exception("Your OS is not supported")
 
-
 options = webdriver.FirefoxOptions()
 options.add_argument("--headless")
-request_driver = webdriver.Remote("http://87.249.53.102:4444/wd/hub", options=options)
+request_driver = webdriver.Firefox(service=s, options=options)
 
 
 def get_request(keyphrase):
@@ -85,4 +84,4 @@ def get_vendor_pos(vendor, keyphrase, pages):
         return None
 
 
-print(get_vendor_pos(43915761, "контейнер для линз", 1))
+print(get_vendor_pos(43915761, "контейнер для линз", 20))
