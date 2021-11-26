@@ -13,7 +13,7 @@ else:
 
 options = webdriver.FirefoxOptions()
 options.add_argument("--headless")
-request_driver = webdriver.Firefox(GeckoDriverManager().install(), options=options)
+request_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
 
 
 def get_request(keyphrase):
