@@ -10,7 +10,7 @@ elif current_platform == "Windows":
     s = Service("windows_geckodriver.exe")
 else:
     raise Exception("Your OS is not supported")
-
+#
 options = webdriver.FirefoxOptions()
 options.add_argument("--headless")
 request_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
