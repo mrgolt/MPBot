@@ -1,6 +1,6 @@
 import telebot
 import math
-from get_position import *
+from wildberries_bot import *
 
 bot = telebot.TeleBot("2102905381:AAHbjtUofTgIvm0muTYZbbcTkeVSQlI5es4")
 
@@ -22,7 +22,7 @@ def message_handler(message):
         msg = "🔎 Поиск запущен.. артикул и запрос проверяется в полной версии сайта первые 20 страниц."
         bot.send_message(message.chat.id,
                          msg)
-        res = get_keyword_position(1000, key,id)
+        res = get_vendor_pos(id, key, 20)
         if res is None:
             res = "Артикул "+id+" по запросу '"+key+"' на первых 20 страницах не обнаружен"
         else:
