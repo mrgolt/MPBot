@@ -1,5 +1,6 @@
 FROM python
 
+
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
@@ -13,5 +14,4 @@ RUN apt-get install -y libfontconfig
 COPY . .
 
 CMD ["python", "-u", "./wildberries_bot.py"]
-
 
