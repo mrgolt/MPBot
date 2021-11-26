@@ -13,7 +13,7 @@ else:
 
 options = webdriver.FirefoxOptions()
 options.add_argument("--headless")
-request_driver = webdriver.Firefox(service=s, options=options)
+request_driver = webdriver.Remote("http://selenium:4444/wd/hub", options=options)
 
 
 def get_request(keyphrase):
