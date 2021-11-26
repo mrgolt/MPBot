@@ -94,4 +94,4 @@ def get_vendor_pos(vendor, keyphrase, pages):
         return None
 
 
-print(get_vendor_pos(43915761, "контейнер дл�
+#print(get_vendor_pos(43915761, "контейнер для линз", 40)
