@@ -20,9 +20,10 @@ def message_handler(message):
         id = data[0]
         key = str(message.text).replace(id,"")
         msg = "🔎 Поиск запущен.. артикул и запрос проверяется в полной версии сайта первые 20 страниц."
-        bot.send_message(message.chat.id,
-                         msg)
-        res = get_vendor_pos(id, key, 20)
+        bot.send_message(message.chat.id, msg)
+
+        res = get_vendor_pos(int(id), key, 20)
+
         if res is None:
             res = "Артикул "+id+" по запросу '"+key+"' на первых 20 страницах не обнаружен"
         else:
