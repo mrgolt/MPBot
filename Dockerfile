@@ -12,5 +12,6 @@ RUN apt-get install -y libfontconfig
 
 COPY . .
 
-CMD ["python", "-u", "./bot.py"]
+CMD ["python", "-u", "./wildberries_bot.py"]
+
 
