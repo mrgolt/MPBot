@@ -13,7 +13,7 @@ else:
 
 options = webdriver.FirefoxOptions()
 options.add_argument("--headless")
-request_driver = webdriver.Firefox(executable_path=os.path.dirname(os.path.realpath(__file__))+"/linux_geckodriver", options=options)
+request_driver = webdriver.Firefox(GeckoDriverManager().install(), options=options)
 
 
 def get_request(keyphrase):
@@ -85,4 +85,4 @@ def get_vendor_pos(vendor, keyphrase, pages):
         return None
 
 
-pr
+print(get_vendor_pos(43915761, "контейнер для линз", 20))
