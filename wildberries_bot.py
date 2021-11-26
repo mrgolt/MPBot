@@ -26,7 +26,7 @@ request_driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(
 
 
 def get_request(keyphrase):
-    request_driver.get(f"https://www.wildberries.ru/catalog/0/search.aspx?page=2&sort=popular&search={keyphrase}")
+    request_driver.get(f"https://www.wildberries.ru/catalog/0/search.aspx?page=2&sort=popular&search={keyphrase.replace(' ','+')}")
     products = WebDriverWait(request_driver, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "j-card-item")))
     arr = []
     for product in products:
@@ -94,4 +94,4 @@ def get_vendor_pos(vendor, keyphrase, pages):
         return None
 
 
-#print(get_vendor_pos(43915761, "контейнер для линз", 40))
+print(get_vendor_pos(43915761, "контейнер дл�
