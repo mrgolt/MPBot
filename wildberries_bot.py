@@ -13,7 +13,7 @@ else:
 
 options = webdriver.FirefoxOptions()
 options.add_argument("--headless")
-request_driver = webdriver.Remote("http://selenium:4444/wd/hub", options=options)
+request_driver = webdriver.Remote("http://87.249.53.102:4444/wd/hub", options=options)
 
 
 def get_request(keyphrase):
@@ -85,4 +85,4 @@ def get_vendor_pos(vendor, keyphrase, pages):
         return None
 
 
-print(get_vendor_pos(43915761, "контейнер для линз", 20))
+print(get_vendor_pos(43915761, "контейнер для линз", 1))
