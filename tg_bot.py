@@ -2,6 +2,7 @@ import telebot
 import math
 from new_wb_bot import *
 
+
 region_list = "Выберете один или несколько городов из списка и ввелит их номера через пробел\n"
 for n, key in enumerate(list(regions.keys())):
     region_list += f"{n+1}. {key}\n"
