@@ -39,20 +39,23 @@ def get_cookies(region):
         'Connection': 'keep-alive',
         'Host': 'www.wildberries.ru'
     }
-    response = manager.request("POST", url, headers=headers, body=payload2)
-    cookies = response.headers["Set-Cookie"].replace("httponly", '').replace("path=/", '').replace(", ", '').replace("HttpOnly", '').replace('Path=/', '').split("; ")
-    res = []
-    for n, cookie in enumerate(cookies):
-        for nc in needed_cookies:
-            if nc in cookie:
-                if nc == "__pricemargin":
-                    cookie_value = cookie_value = cookie.split("=")[1][:-2]
-                else:
-                    cookie_value = cookie.split("=")[1]
-                cookie_value = cookie_value.replace("_", ",")
-                res.append(f"{needed_cookies[nc]}={cookie_value}")
-                break
-    res = '&'.join(res)
+    try:
+        response = manager.request("POST", url, headers=headers, body=payload2)
+        cookies = response.headers["Set-Cookie"].replace("httponly", '').replace("path=/", '').replace(", ", '').replace("HttpOnly", '').replace('Path=/', '').split("; ")
+        res = []
+        for n, cookie in enumerate(cookies):
+            for nc in needed_cookies:
+                if nc in cookie:
+                    if nc == "__pricemargin":
+                        cookie_value = cookie.split("=")[1].split('-')[0]
+                    else:
+                        cookie_value = cookie.split("=")[1]
+                    cookie_value = cookie_value.replace("_", ",")
+                    res.append(f"{needed_cookies[nc]}={cookie_value}")
+                    break
+        res = '&'.join(res)
+    except:
+        res = None
     return res
 
 
@@ -66,10 +69,13 @@ def get_query(keyphrase):
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive'
     }
-    response = manager.request("GET", url, headers=request_headers).data.decode("utf-8")[:-1]
-    print("response:", response)
-    response = eval(response)
-    return response["query"], response["shardKey"]
+    try:
+        response = manager.request("GET", url, headers=request_headers).data.decode("utf-8")[:-1]
+        # print("response:", response)
+        response = eval(response)
+        return response["query"], response["shardKey"]
+    except:
+        return None
 
 
 def get_filters(cookies, query, shard_key):
@@ -89,12 +95,15 @@ def get_filters(cookies, query, shard_key):
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive'
     }
-    response = eval(manager.request("GET", url, headers=request_headers).data.decode("utf-8"))
-    for i in range(4):
-        for f in response["data"]["filters"][i]["items"]:
-            filters[filters_keys[i]].append(f["id"])
-    for key in filters_keys:
-        filters[key] = list(map(str, filters[key]))
+    try:
+        response = eval(manager.request("GET", url, headers=request_headers).data.decode("utf-8"))
+        for i in range(4):
+            for f in response["data"]["filters"][i]["items"]:
+                filters[filters_keys[i]].append(f["id"])
+        for key in filters_keys:
+            filters[key] = list(map(str, filters[key]))
+    except:
+        filters = None
     return filters
 
 
@@ -109,7 +118,10 @@ def get_search_res(filters, query, cookies, keyphrase):
         'Connection': 'keep-alive'
     }
     payload = "{\"brands\":[" + ','.join(filters["fbrand"]) + "]}"
-    response = eval(manager.request("GET", url, headers=request_headers, body=payload).data.decode("utf-8").replace("true", "True").replace("false", "False").replace("null", "None"))
+    try:
+        response = eval(manager.request("GET", url, headers=request_headers, body=payload).data.decode("utf-8").replace("true", "True").replace("false", "False").replace("null", "None"))
+    except:
+        response = None
     return response
 
 
@@ -123,16 +135,20 @@ def add_search_vendors(search_res, vendors):
 def get_page_vendors(request, page):
     #  print("get_page_vendors", request, page)
     request += f"&page={page+1}"
+    # print("request:", request)
     https = urllib3.PoolManager()
-    response = https.request("GET", request)
-    soup = BeautifulSoup(response.data, "html.parser")
-    str_response = str(soup)
-    json_response = json.loads(str_response)
-    print("json response:", json_response)
-    products = json_response["data"]["products"]
-    arr = []
-    for product in products:
-        arr.append(product["id"])
+    try:
+        response = https.request("GET", request)
+        soup = BeautifulSoup(response.data, "html.parser")
+        str_response = str(soup)
+        # print("str_response:", str_response)
+        json_response = json.loads(str_response)
+        products = json_response["data"]["products"]
+        arr = []
+        for product in products:
+            arr.append(product["id"])
+    except:
+        arr = None
     return arr
 
 
@@ -140,12 +156,20 @@ def get_vendors(region, keyphrase, pages):
     #  print("get_vendors", region, keyphrase, pages)
     res = []
     cookies = get_cookies(region)
-    query, shard_key = get_query(keyphrase)
+    if not cookies:
+        return "Ошибка при получении параметров запроса"
+    raw_query = get_query(keyphrase)
+    if raw_query:
+        query, shard_key = raw_query
+    else:
+        return "Ошибка при получении запроса и осколка"
     request = f"https://wbxcatalog-ru.wildberries.ru/{shard_key}/catalog?spp=0&{cookies}&{query}&locale=ru&lang=ru&curr=rub&reg=0&appType=1&offlineBonus=0&onlineBonus=0&emp=0"
     pages_arr = [page for page in range(0, pages+1)]
     requests = [request for _ in range(0, pages+1)]
     with ThreadPoolExecutor(8) as executor:
-        arr = executor.map(get_page_vendors, requests, pages_arr)
+        arr = list(executor.map(get_page_vendors, requests, pages_arr))
+    if type(arr[0]) == str:
+        return arr[0]
     arr = [item for sublist in arr for item in sublist]
     res.extend(arr)
     filters = get_filters(cookies, query, shard_key)
@@ -165,6 +189,8 @@ def get_vendor_pos(vendor, vendor_arr):
 @dispatch(int, str, str, int)
 def get_vendor_pos(vendor, region, keyphrase, pages):
     vendor_arr = get_vendors(region, keyphrase, pages)
+    if type(vendor_arr) == str:
+        return vendor_arr
     try:
         return vendor_arr.index(vendor)
     except:
