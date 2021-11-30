@@ -39,7 +39,6 @@ def get_cookies(region):
         'Connection': 'keep-alive',
         'Host': 'www.wildberries.ru'
     }
-
     response = manager.request("POST", url, headers=headers, body=payload2)
     cookies = response.headers["Set-Cookie"].replace("httponly", '').replace("path=/", '').replace(", ", '').replace("HttpOnly", '').replace('Path=/', '').split("; ")
     res = []
@@ -67,9 +66,9 @@ def get_query(keyphrase):
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive'
     }
-    response = manager.request("GET", url, headers=request_headers).data.decode("utf-8")
-    print(response)
-    response = ast.literal_eval(response)
+    response = manager.request("GET", url, headers=request_headers).data.decode("utf-8")[:-1]
+    print("response:", response)
+    response = eval(response)
     return response["query"], response["shardKey"]
 
 
@@ -90,7 +89,7 @@ def get_filters(cookies, query, shard_key):
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive'
     }
-    response = ast.literal_eval(manager.request("GET", url, headers=request_headers).data.decode("utf-8"))
+    response = eval(manager.request("GET", url, headers=request_headers).data.decode("utf-8"))
     for i in range(4):
         for f in response["data"]["filters"][i]["items"]:
             filters[filters_keys[i]].append(f["id"])
@@ -129,6 +128,7 @@ def get_page_vendors(request, page):
     soup = BeautifulSoup(response.data, "html.parser")
     str_response = str(soup)
     json_response = json.loads(str_response)
+    print("json response:", json_response)
     products = json_response["data"]["products"]
     arr = []
     for product in products:
