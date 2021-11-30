@@ -67,7 +67,9 @@ def get_query(keyphrase):
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive'
     }
-    response = ast.literal_eval(manager.request("GET", url, headers=request_headers).data.decode("utf-8"))
+    response = manager.request("GET", url, headers=request_headers).data.decode("utf-8")
+    print(response)
+    response = ast.literal_eval(response)
     return response["query"], response["shardKey"]
 
 
