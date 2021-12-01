@@ -12,8 +12,6 @@ regions = {
     "Красноярск": [56.0184, 92.8672],
     "Уфа": [54.7431, 55.9678]
 }
-
-
 needed_cookies = {
     "__store": "stores",
     "__region": "regions",
@@ -41,6 +39,8 @@ def get_cookies(region):
         'Connection': 'keep-alive',
         'Host': 'www.wildberries.ru'
     }
+    response = None
+    cookies = None
     try:
         response = manager.request("POST", url, headers=headers, body=payload2)
         cookies = response.headers["Set-Cookie"].replace("httponly", '').replace("path=/", '').replace(", ", '').replace("HttpOnly", '').replace('Path=/', '').split("; ")
@@ -57,6 +57,14 @@ def get_cookies(region):
                     break
         res = '&'.join(res)
     except:
+        if response:
+            print("response from cookies:", response)
+        else:
+            print("no response from cookies")
+        if cookies:
+            print("cookies:", cookies)
+        else:
+            print("no cookies")
         res = None
     return res
 
@@ -71,12 +79,17 @@ def get_query(keyphrase):
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive'
     }
+    response = None
     try:
         response = manager.request("GET", url, headers=request_headers).data.decode("utf-8")[:-1]
         # print("response:", response)
         response = eval(response)
         return response["query"], response["shardKey"]
     except:
+        if response:
+            print("response from query:", response)
+        else:
+            print("no response from query")
         return None
 
 
@@ -97,6 +110,7 @@ def get_filters(cookies, query, shard_key):
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive'
     }
+    response = None
     try:
         response = eval(manager.request("GET", url, headers=request_headers).data.decode("utf-8"))
         for i in range(4):
@@ -106,6 +120,10 @@ def get_filters(cookies, query, shard_key):
             filters[key] = list(map(str, filters[key]))
     except:
         filters = None
+        if response:
+            print("response from filters:", response)
+        else:
+            print("no response from filters")
     return filters
 
 
@@ -120,9 +138,14 @@ def get_search_res(filters, query, cookies, keyphrase):
         'Connection': 'keep-alive'
     }
     payload = "{\"brands\":[" + ','.join(filters["fbrand"]) + "]}"
+    response = None
     try:
         response = eval(manager.request("GET", url, headers=request_headers, body=payload).data.decode("utf-8").replace("true", "True").replace("false", "False").replace("null", "None"))
     except:
+        if response:
+            print("response from get_search:", response)
+        else:
+            print("no response from get_search")
         response = None
     return response
 
@@ -139,6 +162,10 @@ def get_page_vendors(request, page):
     request += f"&page={page+1}"
     # print("request:", request)
     https = urllib3.PoolManager()
+    response = None
+    json_resppnse = None
+    products = None
+    arr = None
     try:
         response = https.request("GET", request)
         soup = BeautifulSoup(response.data, "html.parser")
@@ -150,6 +177,22 @@ def get_page_vendors(request, page):
         for product in products:
             arr.append(product["id"])
     except:
+        if response:
+            print("response from get_page_vendors:", response)
+        else:
+            print("no response from get_page_vendors")
+        if json_response:
+            print("json response from get_page_vendord:", json_response)
+        else:
+            print("no json response from get_page_vendors")
+        if products:
+            print("products from get_page_vendors:", products)
+        else:
+            print("no products from get_page_vandors")
+        if arr:
+            print("ids from get_page_vendors:", arr)
+        else:
+            print("no ids from get_page_vendors")
         arr = None
     return arr
 
