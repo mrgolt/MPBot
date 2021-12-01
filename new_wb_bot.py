@@ -12,6 +12,8 @@ regions = {
     "Красноярск": [56.0184, 92.8672],
     "Уфа": [54.7431, 55.9678]
 }
+
+
 needed_cookies = {
     "__store": "stores",
     "__region": "regions",

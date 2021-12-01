@@ -12,7 +12,6 @@ regions = {
     "Красноярск": [56.0184, 92.8672],
     "Уфа": [54.7431, 55.9678]
 }
-
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -21,7 +20,6 @@ except AttributeError:
 else:
     # Handle target environment that doesn't support HTTPS verification
     ssl._create_default_https_context = _create_unverified_https_context
-
 
 def driver_init(region, headless=True):
     caps = DesiredCapabilities.CHROME
