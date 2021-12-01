@@ -58,13 +58,13 @@ def message_handler(message):
                 for key in keys:
                     msg = f"{key}\n"
                     for region in user_data[message.chat.id][1]:
-                        res = get_vendor_pos(id, region, key, 50)
+                        res = get_vendor_pos(id, region, key, 20)
                         if not res:
                             msg += f"{region} - на первых 20 страниах не найден\n"
                         elif type(res) == str:
                             msg += f"{region} - {res}"
                         else:
-                            msg += f"{region} - позиция {res} страница {math.ceil(res/50)}\n"
+                            msg += f"{region} - позиция {res} страница {math.ceil(res/100)}\n"
                     bot.send_message(message.chat.id, msg)
 
         else:
