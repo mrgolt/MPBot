@@ -3,10 +3,9 @@ import math
 from new_wb_bot import *
 
 region_list = "Выберете один или несколько городов из списка и ввелит их номера через пробел\n"
-
 for n, key in enumerate(list(regions.keys())):
     region_list += f"{n+1}. {key}\n"
-bot = telebot.TeleBot("2102905381:AAHbjtUofTgIvm0muTYZbbcTkeVSQlI5es4")
+bot = telebot.TeleBot("2125108959:AAHqXehXchZvi8BQwRuLsJW7htAoZ-0QLTQ")
 user_data = dict()
 
 
@@ -64,7 +63,7 @@ def message_handler(message):
                         elif type(res) == str:
                             msg += f"{region} - {res}"
                         else:
-                            msg += f"{region} - позиция {res} страница {math.ceil(res/100)}\n"
+                            msg += f"{region} - позиция {res} страница {math.ceil(res/50)}\n"
                     bot.send_message(message.chat.id, msg)
 
         else:

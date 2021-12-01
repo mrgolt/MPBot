@@ -43,6 +43,11 @@ def get_cookies(region):
     cookies = None
     try:
         response = manager.request("POST", url, headers=headers, body=payload2)
+        if response.status == 504:
+            i = 0
+            while response.status == 504 and i < 3:
+                response = manager.request("POST", url, headers=headers, body=payload2)
+                i += 1
         cookies = response.headers["Set-Cookie"].replace("httponly", '').replace("path=/", '').replace(", ", '').replace("HttpOnly", '').replace('Path=/', '').split("; ")
         res = []
         for n, cookie in enumerate(cookies):
@@ -58,7 +63,9 @@ def get_cookies(region):
         res = '&'.join(res)
     except:
         if response:
-            print("response from cookies:", response)
+            print("response code from cookies:", response.status)
+            if response.status != 200:
+                print("response from cookies:", response.data.decode("utf-8"))
         else:
             print("no response from cookies")
         if cookies:
@@ -81,15 +88,23 @@ def get_query(keyphrase):
     }
     response = None
     try:
-        response = manager.request("GET", url, headers=request_headers).data.decode("utf-8")[:-1]
+        response = manager.request("GET", url, headers=request_headers)
+        if response.status == 504:
+            i = 0
+            while response.status == 504 and i < 3:
+                response = manager.request("GET", url, headers=request_headers)
+                i += 1
+        decoded_response = response.data.decode("utf-8")[:-1]
         # print("response:", response)
-        response1 = eval(response)
+        response1 = eval(decoded_response)
         return response1["query"], response1["shardKey"]
     except:
         print("url from query:", url)
         print("keyphrase from query:", keyphrase)
         if response:
-            print("response from query:", response)
+            print("response code from query:", response.status)
+            if response.status != 200:
+                print("response from query:", response.data.decode("utf-8"))
         else:
             print("no response from query")
         return None
@@ -114,9 +129,16 @@ def get_filters(cookies, query, shard_key):
     }
     response = None
     try:
-        response = eval(manager.request("GET", url, headers=request_headers).data.decode("utf-8"))
+        response = manager.request("GET", url, headers=request_headers)
+        if response.status == 504:
+            i = 0
+            while response.status == 504 and i < 3:
+                response = manager.request("GET", url, headers=request_headers)
+                i += 1
+        decoded_response = response.data.decode("utf-8")
+        response1 = eval(decoded_response)
         for i in range(4):
-            for f in response["data"]["filters"][i]["items"]:
+            for f in response1["data"]["filters"][i]["items"]:
                 filters[filters_keys[i]].append(f["id"])
         for key in filters_keys:
             filters[key] = list(map(str, filters[key]))
@@ -124,7 +146,9 @@ def get_filters(cookies, query, shard_key):
         print("url from get_filters:", url)
         filters = None
         if response:
-            print("response from filters:", response)
+            print("response code from filters:", response.status)
+            if response.status != 200:
+                print("response from filters:", response.data.decode("utf-8"))
         else:
             print("no response from filters")
     return filters
@@ -143,13 +167,21 @@ def get_search_res(filters, query, cookies, keyphrase):
     payload = "{\"brands\":[" + ','.join(filters["fbrand"]) + "]}"
     response = None
     try:
-        response = manager.request("GET", url, headers=request_headers, body=payload).data.decode("utf-8").replace("true", "True").replace("false", "False").replace("null", "None")
-        response1 = eval(response)
+        response = manager.request("GET", url, headers=request_headers, body=payload)
+        if response.status == 504:
+            i = 0
+            while response.status == 504 and i < 3:
+                response = manager.request("GET", url, headers=request_headers, body=payload)
+                i += 1
+        decoded_response = response.data.decode("utf-8").replace("true", "True").replace("false", "False").replace("null", "None")
+        response1 = eval(decoded_response)
     except:
         print("payload from get_search_res:", payload)
         print("url from get_search_res:", url)
         if response:
-            print("response from get_search:", response)
+            print("response code from get_search:", response.status)
+            if response.status != 200:
+                print("response from get_search:", response.data.decode("utf-8"))
         else:
             print("no response from get_search")
         response1 = None
@@ -175,6 +207,11 @@ def get_page_vendors(request, page):
     try:
         response = https.request("GET", request)
         soup = BeautifulSoup(response.data, "html.parser")
+        if response.status == 504:
+            i = 0
+            while response.status == 504 and i < 3:
+                response = https.request("GET", request)
+                i += 1
         str_response = str(soup)
         # print("str_response:", str_response)
         json_response = json.loads(str_response)
@@ -184,7 +221,7 @@ def get_page_vendors(request, page):
             arr.append(product["id"])
     except:
         if response:
-            print("response from get_page_vendors:", response)
+            print("response code from get_page_vendors:", response.status)
         else:
             print("no response from get_page_vendors")
         if json_response:
@@ -246,4 +283,3 @@ def get_vendor_pos(vendor, region, keyphrase, pages):
         return vendor_arr.index(vendor)
     except:
         return None
-
