@@ -83,9 +83,11 @@ def get_query(keyphrase):
     try:
         response = manager.request("GET", url, headers=request_headers).data.decode("utf-8")[:-1]
         # print("response:", response)
-        response = eval(response)
-        return response["query"], response["shardKey"]
+        response1 = eval(response)
+        return response1["query"], response1["shardKey"]
     except:
+        print("url from query:", url)
+        print("keyphrase from query:", keyphrase)
         if response:
             print("response from query:", response)
         else:
@@ -119,6 +121,7 @@ def get_filters(cookies, query, shard_key):
         for key in filters_keys:
             filters[key] = list(map(str, filters[key]))
     except:
+        print("url from get_filters:", url)
         filters = None
         if response:
             print("response from filters:", response)
@@ -140,14 +143,17 @@ def get_search_res(filters, query, cookies, keyphrase):
     payload = "{\"brands\":[" + ','.join(filters["fbrand"]) + "]}"
     response = None
     try:
-        response = eval(manager.request("GET", url, headers=request_headers, body=payload).data.decode("utf-8").replace("true", "True").replace("false", "False").replace("null", "None"))
+        response = manager.request("GET", url, headers=request_headers, body=payload).data.decode("utf-8").replace("true", "True").replace("false", "False").replace("null", "None")
+        response1 = eval(response)
     except:
+        print("payload from get_search_res:", payload)
+        print("url from get_search_res:", url)
         if response:
             print("response from get_search:", response)
         else:
             print("no response from get_search")
-        response = None
-    return response
+        response1 = None
+    return response1
 
 
 def add_search_vendors(search_res, vendors):
@@ -163,7 +169,7 @@ def get_page_vendors(request, page):
     # print("request:", request)
     https = urllib3.PoolManager()
     response = None
-    json_resppnse = None
+    json_response = None
     products = None
     arr = None
     try:
@@ -240,3 +246,4 @@ def get_vendor_pos(vendor, region, keyphrase, pages):
         return vendor_arr.index(vendor)
     except:
         return None
+
