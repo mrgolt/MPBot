@@ -14,5 +14,4 @@ RUN apt-get install -y firefox-esr
 
 COPY . .
 
-CMD ["python", "-u", "./tg_bot.py"]
-
+CMD ["python", "-u", "./bot.py"]
