@@ -48,6 +48,8 @@ def get_cookies(region):
             while response.status == 504 and i < 3:
                 response = manager.request("POST", url, headers=headers, body=payload2)
                 i += 1
+                sleep(0.1)
+
         cookies = response.headers["Set-Cookie"].replace("httponly", '').replace("path=/", '').replace(", ", '').replace("HttpOnly", '').replace('Path=/', '').split("; ")
         res = []
         for n, cookie in enumerate(cookies):
