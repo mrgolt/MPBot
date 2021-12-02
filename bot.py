@@ -5,7 +5,6 @@ from new_wb_bot import *
 region_list = "Выберете один или несколько городов из списка и ввелит их номера через пробел\n"
 for n, key in enumerate(list(regions.keys())):
     region_list += f"{n+1}. {key}\n"
-
 bot = telebot.TeleBot("2102905381:AAHbjtUofTgIvm0muTYZbbcTkeVSQlI5es4")
 user_data = dict()
 
@@ -55,6 +54,7 @@ def message_handler(message):
             else:
                 msg = "🔎 Поиск запущен.. артикул и запрос проверяется в полной версии сайта первые 20 страниц."
                 bot.send_message(message.chat.id, msg)
+                user_data[message.chat.id][0] = "pending"
                 for key in keys:
                     msg = f"{key}\n"
                     for region in user_data[message.chat.id][1]:
@@ -62,15 +62,17 @@ def message_handler(message):
                         if not res:
                             msg += f"{region} - на первых 20 страниах не найден\n"
                         elif type(res) == str:
-                            msg += f"{region} - {res}"
+                            msg += f"{region} - {res}\n"
                         else:
-                            msg += f"{region} - позиция {res} страница {math.ceil(res/50)}\n"
+                            msg += f"{region} - позиция {res} страница {math.ceil(res / 50)}\n"
                     bot.send_message(message.chat.id, msg)
-
+                user_data[message.chat.id][0] = "request"
         else:
             bot.send_message(message.chat.id,
                              "Запрос введен в неправильном формате или содержит ошибки. .\nВведите запрос в формате: "
                              "43915761 контейнер для линз, линзы")
+    elif user_data[message.chat.id][0] == "pending":
+        bot.send_message(message.chat.id, "Ваш запрос уже обрабатывается, дождитесь завершения обработки запроса")
 
 
 bot.polling(none_stop=True, interval=0)
