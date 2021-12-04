@@ -29,9 +29,11 @@ def select_region(message):
 @bot.message_handler(content_types=["text"])
 def message_handler(message):
     # tg_analytic.statistics(message.chat.id, message.text)
-    if message.chat.id in user_data.keys():
-
-        start_message(message)
+    if message.chat.id not in user_data.keys():
+        user_n_regions = set(map(int, "1 2 3 5 7".split()))
+        user_regions = set(list(regions.keys())[user_n_region - 1] for user_n_region in user_n_regions)
+        user_data[message.chat.id] = ["request", user_regions]
+        #start_message(message)
     elif user_data[message.chat.id][0] == "region":
         try:
             user_n_regions = set(map(int, message.text.split()))
@@ -43,7 +45,7 @@ def message_handler(message):
                                               "поиска")
         except:
             bot.send_message(message.chat.id, "В вашем запросе ошибка, повторите запрос")
-    elif user_data[message.chat.id][0] == "request":
+    if user_data[message.chat.id][0] == "request":
         data = str(message.text)
         ldata = data.split()
         if len(ldata) > 1 and ldata[0].isnumeric():
@@ -73,8 +75,4 @@ def message_handler(message):
             bot.send_message(message.chat.id,
                              "Запрос введен в неправильном формате или содержит ошибки. .\nВведите запрос в формате: "
                              "43915761 контейнер для линз, линзы")
-    elif user_data[message.chat.id][0] == "pending":
-        bot.send_message(message.chat.id, "Ваш запрос уже обрабатывается, дождитесь завершения обработки запроса")
-
-
-bot.polling(none_stop=True, interval=0)
+    elif user_data[message.chat.id][0] == "
