@@ -75,4 +75,8 @@ def message_handler(message):
             bot.send_message(message.chat.id,
                              "Запрос введен в неправильном формате или содержит ошибки. .\nВведите запрос в формате: "
                              "43915761 контейнер для линз, линзы")
-    elif user_data[message.chat.id][0] == "
+    if user_data[message.chat.id][0] == "pending":
+        bot.send_message(message.chat.id, "Ваш запрос уже обрабатывается, дождитесь завершения обработки запроса")
+
+
+bot.polling(none_stop=True, interval=0)
