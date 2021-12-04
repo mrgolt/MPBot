@@ -29,7 +29,8 @@ def select_region(message):
 @bot.message_handler(content_types=["text"])
 def message_handler(message):
     # tg_analytic.statistics(message.chat.id, message.text)
-    if message.chat.id not in user_data.keys():
+    if message.chat.id in user_data.keys():
+
         start_message(message)
     elif user_data[message.chat.id][0] == "region":
         try:
