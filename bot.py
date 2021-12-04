@@ -19,7 +19,6 @@ def start_message(message):
                                       "контейнер для линз, линзы")
     if message.chat.id not in user_data.keys():
         user_data[message.chat.id] = ["request", set()]
-        user_data[message.chat.id] = ["region", set()]
 
 
 
@@ -33,6 +32,7 @@ def select_region(message):
 def message_handler(message):
     # tg_analytic.statistics(message.chat.id, message.text)
     if message.chat.id not in user_data.keys():
+        user_data[message.chat.id] = ["region", set()]
         user_n_regions = set(map(int, "1 2 3 5 7".split()))
         user_regions = set(list(regions.keys())[user_n_region - 1] for user_n_region in user_n_regions)
         user_data[message.chat.id] = ["request", user_regions]
