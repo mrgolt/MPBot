@@ -19,6 +19,8 @@ def start_message(message):
                                       "контейнер для линз, линзы")
     if message.chat.id not in user_data.keys():
         user_data[message.chat.id] = ["request", set()]
+        user_data[message.chat.id] = ["region", set()]
+
 
 
 @bot.message_handler(commands=["region"])
