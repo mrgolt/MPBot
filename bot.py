@@ -14,8 +14,8 @@ user_data = dict()
 def start_message(message):
     # tg_analytic.statistics(message.chat.id, message.text)
     bot.send_message(message.chat.id, "Узнайте, на каком месте находиться ваш товар в поисковой выдачи на "
-                                      "Wildberries.\nДля этого нужно выбрать регион поиска c помощью команды /region "
-                                      "и ввести артикул и интересующий Вас запрос поиска.\nНапример: 43915761 "
+                                      "Wildberries в разных регионах страны.\nДля этого нужно"
+                                      "ввести артикул и до 5 интересующих Вас запросов поиска, через запятую.\nНапример: 43915761 "
                                       "контейнер для линз, линзы")
     if message.chat.id not in user_data.keys():
         user_data[message.chat.id] = ["request", set()]
@@ -65,7 +65,7 @@ def message_handler(message):
 
                         res = get_vendor_pos(id, region, key, 20)
                         if not res:
-                            msg += f"{region} - на первых 20 страниах не найден\n"
+                            msg += f"{region} - на первых 20 страницах не найден\n"
                         elif type(res) == str:
                             msg += f"{region} - {res}\n"
                         else:
