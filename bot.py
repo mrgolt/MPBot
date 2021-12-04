@@ -57,7 +57,8 @@ def message_handler(message):
                 user_data[message.chat.id][0] = "pending"
                 for key in keys:
                     msg = f"{key}\n"
-                    for region in user_data[message.chat.id][1]:
+                    for region in [1,2,3,5,7]:#user_data[message.chat.id][1]:
+
                         res = get_vendor_pos(id, region, key, 20)
                         if not res:
                             msg += f"{region} - на первых 20 страниах не найден\n"

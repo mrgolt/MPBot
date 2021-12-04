@@ -151,6 +151,7 @@ def get_filters(cookies, query, shard_key):
             print("response code from filters:", response.status)
             if response.status != 200:
                 print("response from filters:", response.data.decode("utf-8"))
+
         else:
             print("no response from filters")
     return filters
@@ -209,9 +210,10 @@ def get_page_vendors(request, page):
     try:
         response = https.request("GET", request)
         soup = BeautifulSoup(response.data, "html.parser")
-        if response.status == 504:
+        if response.status != 200:
             i = 0
-            while response.status == 504 and i < 3:
+            while response.status != 200 and i < 5:
+                sleep(1)
                 response = https.request("GET", request)
                 i += 1
         str_response = str(soup)
