@@ -2,6 +2,7 @@ import telebot
 import math
 from new_wb_bot import *
 
+
 region_list = "Выберете один или несколько городов из списка и ввелит их номера через пробел\n"
 for n, key in enumerate(list(regions.keys())):
     region_list += f"{n+1}. {key}\n"
@@ -60,7 +61,7 @@ def message_handler(message):
                 user_data[message.chat.id][0] = "pending"
                 for key in keys:
                     msg = f"{key}\n"
-                    for region in [1,2,3,5,7]:#user_data[message.chat.id][1]:
+                    for region in user_data[message.chat.id][1]:
 
                         res = get_vendor_pos(id, region, key, 20)
                         if not res:
