@@ -14,13 +14,11 @@ user_data = dict()
 def start_message(message):
     # tg_analytic.statistics(message.chat.id, message.text)
     bot.send_message(message.chat.id, "Узнайте, на каком месте находиться ваш товар в поисковой выдачи на "
-                                      "Wildberries в разных регионах страны.\nДля этого нужно"
-                                      "ввести артикул и до 5 интересующих Вас запросов поиска, через запятую.\nНапример: 43915761 "
-                                      "контейнер для линз, линзы")
+                                      "Wildberries в разных регионах страны.\nДля этого нужно "
+                                      "ввести артикул и до 5 интересующих Вас запросов поиска, через запятую.\nНапример: **43915761 "
+                                      "контейнер для линз, линзы**")
     #if message.chat.id not in user_data.keys():
     #    user_data[message.chat.id] = ["request", set()]
-
-
 
 
 @bot.message_handler(commands=["region"])
@@ -64,21 +62,21 @@ def message_handler(message):
                     msg = f"{key}\n"
                     for region in user_data[message.chat.id][1]:
 
-                        res = get_vendor_pos(id, region, key, 20)
+                        res = get_vendor_pos(id, region, key, 30)
                         if not res:
-                            msg += f"{region} - на первых 20 страницах не найден\n"
+                            msg += f"{region} - на первых 30 страницах не найден\n"
                         elif type(res) == str:
                             msg += f"{region} - {res}\n"
                         else:
-                            msg += f"{region} - позиция {res} страница {math.ceil(res / 50)}\n"
+                            msg += f"{region} - позиция {res} страница {math.ceil(res / 100)}\n"
                     bot.send_message(message.chat.id, msg)
                 user_data[message.chat.id][0] = "request"
         else:
             bot.send_message(message.chat.id,
                              "Запрос введен в неправильном формате или содержит ошибки. .\nВведите запрос в формате: "
-                             "43915761 контейнер для линз, линзы")
+                             "**43915761 контейнер для линз, линзы**")
     if user_data[message.chat.id][0] == "pending":
         bot.send_message(message.chat.id, "Ваш запрос уже обрабатывается, дождитесь завершения обработки запроса")
 
 
-bot.polling(none_stop=True, interval=0)
+bot.polling(none_stop=True, int
