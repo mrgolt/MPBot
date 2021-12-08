@@ -79,4 +79,4 @@ def message_handler(message):
         bot.send_message(message.chat.id, "Ваш запрос уже обрабатывается, дождитесь завершения обработки запроса")
 
 
-bot.polling(none_stop=True, int
+bot.polling(none_stop=True, interval=0)
